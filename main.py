@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QTabWidget, QPushButton
 from PySide6.QtCore import Qt
 from tab_content import create_tab_content
 
-class DynamicTabsWindow(QMainWindow):
+class MainScreen(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Dynamic Tabs with Categories")

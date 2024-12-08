@@ -1,6 +1,6 @@
 menu:
   - category: "Inicio"
-    screen: "screens.analysis"
+    screen: "main"
     icon: "icons/analysis_icon.png"
   - category: "Configuración"
     screen: "screens.execution"
