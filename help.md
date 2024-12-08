@@ -1,8 +1,5 @@
 # Ayuda de la Aplicación
 
-Esta aplicación tiene las siguientes funcionalidades:
-- **Análisis de datos**: Procesa y analiza información.
-- **Configuración**: Personaliza las opciones de la aplicación.
-- **Ejecución de tareas**: Realiza tareas concurrentes.
+### Bienvenido al archivo de ayuda. Aquí encontrarás una guía sobre las diferentes funcionalidades de la aplicación.
 
-Para más información, consulta el manual oficial.
+Pulsa en cada una de las categorías para abrir la ayuda específica

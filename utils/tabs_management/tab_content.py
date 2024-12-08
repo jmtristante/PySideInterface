@@ -1,6 +1,6 @@
 import yaml
 import importlib
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QLabel
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QLabel, QGridLayout
 from PySide6.QtGui import QIcon
 from functools import partial
 
@@ -8,6 +8,11 @@ from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QPushButton
 from functools import partial
 from PySide6.QtCore import QSize
+
+import math
+
+from utils.layout.responsive_layout import ResponsiveGrid
+
 
 def get_icon(icon_name):
     icon = QIcon('icons/' + icon_name)
@@ -49,18 +54,24 @@ def create_tab_content(tab, config_path="screens.yaml"):
     Crea y devuelve un widget inicial con botones para las categorías.
     """
     content = QWidget()
-    layout = QVBoxLayout(content)
+    layout = QGridLayout(content)
 
     # Cargar configuración de categorías
     categories = load_screen_config(config_path)
 
+
+
+    buttons=[]
     # Crear botones para las categorías
     for category in categories.keys():
         button = QPushButton(category)
         button.clicked.connect(lambda _, c=category, d=categories[category]: show_category(tab, c, d))
-        layout.addWidget(button)
+        buttons.append(button)
 
-    return content
+
+    content2=ResponsiveGrid(buttons)
+
+    return content2
 
 
 
@@ -76,6 +87,8 @@ def show_category(tab, category, content):
         if widget is not None:
             widget.deleteLater()
 
+    buttons=[] #Array de botones para mostrar
+
     # Verificar si la categoría tiene subcategorías
     if isinstance(content, dict):
         # Crear botones para las subcategorías con icono de carpeta
@@ -85,10 +98,9 @@ def show_category(tab, category, content):
             icon = get_icon('folder_icon')
             subcategory_button.setIcon(icon)
             subcategory_button.setIconSize(QSize(20, 20))  # Establecer el tamaño del icono
-            #subcategory_button.setIcon(QIcon('icons/folder_icon.png'))
             # Conectar el botón con el evento de mostrar las pantallas de la subcategoría
             subcategory_button.clicked.connect(partial(show_category, tab, subcategory, subcategory_screens))
-            layout.addWidget(subcategory_button)
+            buttons.append(subcategory_button)
 
     elif isinstance(content, list):
         # Crear botones para las pantallas dentro de la categoría con icono personalizado
@@ -101,8 +113,9 @@ def show_category(tab, category, content):
                 screen_button.setIconSize(QSize(20, 20))  # Establecer el tamaño del icono
             # Llamar a switch_to_screen con el módulo correspondiente
             screen_button.clicked.connect(partial(switch_to_screen, tab, screen['module']))
-            layout.addWidget(screen_button)
+            buttons.append(screen_button)
 
+    layout.addWidget(ResponsiveGrid(buttons))
     # Asegúrate de que el contenido esté visible después de actualizar
     tab.setLayout(layout)
 

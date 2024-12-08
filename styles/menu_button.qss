@@ -1,0 +1,13 @@
+QToolButton {
+    background-color: @primary_color; /* Rojo oscuro */
+    color: @text_color;
+    border: 2px solid @border_color; /* Bordes rojo más oscuro */
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+QToolButton:hover {
+    background-color: @primary_hover; /* Rojo más vibrante al pasar el ratón */
+}
+QToolButton:pressed {
+    background-color: @primary_pressed; /* Rojo más oscuro al hacer clic */
+}

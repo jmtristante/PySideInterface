@@ -1,0 +1,16 @@
+Edicion:
+  - name: Análisis
+    module: screens.analysis
+    icon: analysis_icon.png  # Icono personalizado para Análisis
+  - name: Ejecuciones
+    module: screens.execution
+    icon: execution_icon.png  # Icono personalizado para Ejecuciones
+Generacion:
+  Dummys:
+    - name: Visor
+      module: screens.viewer
+      icon: visor_icon.png  # Icono personalizado para Visor
+  Dummys2:
+    - name: Tabla
+      module: screens.table
+      icon: table_icon.png  # Icono personalizado para Tabla

@@ -1,0 +1,39 @@
+Elementos:
+  - name: Boton
+    module: modules.development.screens.button
+  - name: CheckBox
+    module: modules.development.screens.checkbox
+  - name: Combo
+    module: modules.development.screens.combo
+  - name: Radio
+    module: modules.development.screens.radio
+  - name: Slider
+    module: modules.development.screens.slider
+  - name: Tabla
+    module: modules.development.screens.table
+  - name: Texto
+    module: modules.development.screens.text
+  - name: Barra de progreso
+    module: modules.development.screens.progressbar
+  - name: Spinbox
+    module: modules.development.screens.spinbox
+  - name: File dialog
+    module: modules.development.screens.filedialog
+  - name: Group box
+    module: modules.development.screens.groupbox
+  - name: Date picker
+    module: modules.development.screens.datepicker
+  - name: Tooltip
+    module: modules.development.screens.tooltip
+  - name: Lista
+    module: modules.development.screens.list
+  - name: Formulario
+    module: modules.development.screens.form
+  - name: Calendario
+    module: modules.development.screens.calendar
+  - name: Splitter
+    module: modules.development.screens.splitter
+  - name: Mensaje box
+    module: modules.development.screens.messagebox
+  - name: Clipboard
+    module: modules.development.screens.clipboard

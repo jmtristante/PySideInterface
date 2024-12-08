@@ -1,0 +1,10 @@
+@primary_color: #771918;  /* Rojo oscuro */
+@primary_hover: #BA2926;  /* Rojo vibrante */
+@primary_pressed: #340C09;  /* Rojo muy oscuro */
+@active_color: #00664E;  /* Rojo oscuro */
+@active_hover: #00916E;  /* Rojo vibrante */
+@active_pressed: #003D2F;  /* Rojo muy oscuro */
+@background_color: #1A1A1A;  /* Fondo oscuro */
+@secondary_background: #262626;  /* Fondo gris oscuro */
+@text_color: #ECECEC;  /* Texto blanco roto */
+@border_color: #600000;  /* Bordes rojo oscuro */
