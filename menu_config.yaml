@@ -12,5 +12,5 @@ menu:
     screen: "modules.extraction.main"
     icon: "icons/visor_icon.png"
   - category: "Control-M"
-    screen: "modules.control-m.main"
+    screen: "modules.controlm.main"
     icon: "icons/table_icon.png"

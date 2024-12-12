@@ -1,0 +1,116 @@
+/* Colores generales */
+* {
+    color: @text_color; /* Texto en blanco roto */
+    background-color: @background_color; /* Fondo oscuro */
+}
+
+/* Botones (QPushButton) */
+QPushButton {
+    background-color: @primary_color; /* Rojo oscuro */
+    color: @text_color;
+    border: 2px solid @border_color; /* Bordes rojo más oscuro */
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+QPushButton:hover {
+    background-color: @primary_hover; /* Rojo más vibrante al pasar el ratón */
+}
+QPushButton:pressed {
+    background-color: @primary_pressed; /* Rojo más oscuro al hacer clic */
+}
+
+/* Cuadros de texto (QLineEdit) */
+QLineEdit {
+    background-color: @secondary_background; /* Gris oscuro */
+    color: @text_color;
+    border: 1px solid @border_color; /* Bordes rojo oscuro */
+    padding: 5px;
+    border-radius: 3px;
+}
+
+/* Labels (QLabel) */
+QLabel {
+    font-size: 14px;
+    font-weight: bold;
+    color: @text_color; /* Blanco roto */
+}
+
+/* QListWidget */
+QListWidget {
+    background-color: @secondary_background; /* Fondo gris oscuro */
+    border: 1px solid @border_color; /* Bordes rojo oscuro */
+    border-radius: 5px;
+    padding: 5px;
+}
+QListWidget::item {
+    padding: 10px;
+    color: @text_color; /* Texto blanco roto */
+}
+QListWidget::item:selected {
+    background-color: @primary_color; /* Rojo oscuro para elementos seleccionados */
+    color: white;
+}
+
+/* Barra de progreso (QProgressBar) */
+QProgressBar {
+    border: 2px solid @border_color; /* Bordes rojo oscuro */
+    border-radius: 5px;
+    background-color: @secondary_background; /* Fondo gris oscuro */
+    text-align: center;
+    color: @text_color;
+}
+QProgressBar::chunk {
+    background-color: @primary_color; /* Rojo oscuro para el progreso */
+    width: 20px;
+}
+
+/* ComboBox (QComboBox) */
+QComboBox {
+    background-color: @secondary_background; /* Fondo gris oscuro */
+    color: @text_color;
+    border: 1px solid @border_color; /* Bordes rojo oscuro */
+    padding: 5px;
+    border-radius: 5px;
+}
+QComboBox QAbstractItemView {
+    background-color: @secondary_background; /* Fondo gris oscuro en la lista desplegable */
+    color: @text_color;
+    selection-background-color: @primary_color; /* Fondo rojo oscuro al seleccionar */
+}
+
+/* QTabWidget */
+QTabWidget::pane {
+    border: 1px solid @border_color; /* Bordes rojo oscuro */
+}
+QTabBar::tab {
+    background-color: @background_color; /* Fondo oscuro */
+    color: @text_color;
+    border: 1px solid @border_color; /* Bordes rojo oscuro */
+    padding: 10px;
+    border-radius: 5px;
+}
+QTabBar::tab:selected {
+    background-color: @primary_color; /* Rojo oscuro para la pestaña seleccionada */
+}
+
+/* QMessageBox */
+QMessageBox {
+    background-color: @background_color; /* Fondo oscuro */
+}
+QMessageBox QLabel {
+    color: @text_color; /* Texto blanco roto */
+}
+
+/* QScrollBar */
+QScrollBar:vertical, QScrollBar:horizontal {
+    background-color: @secondary_background; /* Fondo gris oscuro */
+    border: none;
+    width: 10px;
+}
+QScrollBar::handle {
+    background-color: @primary_color; /* Rojo oscuro para el scroll */
+    border-radius: 5px;
+}
+QScrollBar::handle:hover {
+    background-color: @primary_hover; /* Más brillante al pasar el ratón */
+}
