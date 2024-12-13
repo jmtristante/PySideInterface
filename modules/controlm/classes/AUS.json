@@ -1,0 +1,1256 @@
+{
+    "jobs":[
+        {
+            "id": "ICIRAUS001D",
+            "type": "script",
+            "file_name": "mover_opu.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/SIB/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"}
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS001D-OK",
+                    "exit":"0",
+                    "sign":"+"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS001FTD",
+            "type": "ftp",
+            "host1":"Powercenter",
+            "host2":"Exadata",
+            "ftp":[
+                {
+                    "orig":"/SCHQ/RDA19/SrcFiles/IN/AUS/*CONTROL*CIR*",
+                    "dest":"/orabatch_test/DWHSCF/HQ/",
+                    "borrado":"true",
+                    "orden":"1"
+                },
+                {
+                    "orig":"/SCHQ/RDA19/SrcFiles/IN/AUS/*CIR_*",
+                    "dest":"/orabatch_test/DWHSCF/AUS",
+                    "borrado":"true",
+                    "orden":"2"
+                }
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS001D-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS001FTD-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS001D-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS002D",
+            "type": "script",
+            "file_name": "generar_token_opu.sh",
+            "file_path": "/orabatch_test/DWHSCF/SCRIPTS",
+            "host": "Exadata",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS001FTD-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS002D-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS001FTD-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS003D",
+            "type": "script",
+            "file_name": "50064157_Generar_Peticion_opu.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS002D-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS003D-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS002D-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS004D",
+            "type": "script",
+            "file_name": "50064157_Cargar_Peticion_opu.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS003D-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS004D-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS004D_10-OK",
+                    "exit":"10",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS003D-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS004E",
+            "type": "script",
+            "file_name": "50064157_Exchange_opu.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS004D_10-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS004E-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS004D_10-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS005D",
+            "type": "script",
+            "file_name": "50064157_Agregar_Peticion_opu.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS004D-OK",
+                    "operator":"OR"
+                },
+                {
+                    "name":"ICIRAUS004E-OK",
+                    "operator":"OR"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS005D-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS004D-OK",
+                    "exit":"*",
+                    "sign":"-"
+                },
+                {
+                    "name":"ICIRAUS004E-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS006D",
+            "type": "script",
+            "file_name": "50064157_Explotacion_opu.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS005D-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS006D-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS005D-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS007D",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "0"},
+                {"parm": "1"},
+                {"parm": "ALL"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS006D-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS007D-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS007D_19-OK",
+                    "exit":"19",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS006D-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS007E",
+            "type": "script",
+            "file_name": "mover_restructuraciones.ksh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/SIB/SCRIPTS/Restructuraciones_Forzosas/bin",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS007D_19-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS007E-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS007E_10-OK",
+                    "exit":"10",
+                    "sign":"+"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS008D",
+            "type": "script",
+            "file_name": "50064157_Validar_Peticion_opu.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS007D-OK",
+                    "operator":"OR"
+                },
+                {
+                    "name":"ICIRAUS007D_19-OK",
+                    "operator":"OR"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS008D-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS007D-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS009D",
+            "type": "script",
+            "file_name": "50064157_Exchange_opu.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS008D-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS009D-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS008D-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010D",
+            "type": "script",
+            "file_name": "borrado_ficheros_opu.sh",
+            "file_path": "/orabatch_test/DWHSCF/SCRIPTS",
+            "host": "Exadata",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS009D-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010D-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_199-OK",
+                    "exit":"199",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_200-OK",
+                    "exit":"200",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_201-OK",
+                    "exit":"201",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_202-OK",
+                    "exit":"202",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_203-OK",
+                    "exit":"203",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_206-OK1",
+                    "exit":"206",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_207-OK1",
+                    "exit":"207",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_208-OK1",
+                    "exit":"208",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_214-OK",
+                    "exit":"214",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_219-OK",
+                    "exit":"219",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS009D-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010A",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_IFRS9_CORP"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010D_201-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010A-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_201-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010A1",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_DECOUPLEDND"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010D_199-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010A1-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_199-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010B",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_UNIDAD_CORP"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010D_202-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010B-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_202-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010B1",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_UN_MDSTD_C"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010D_200-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010B1-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_200-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010C",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_UN_STD_CORP"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010D_203-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010C-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_203-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010F1",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_STD_LOCND"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010D_206-OK1"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010F1-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_206-OK1",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010F2",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_UN_STD_CORP"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010F1-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010F2-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010F1-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010G1",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_IFRS9_CORP"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010D_207-OK1"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010G1-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_207-OK1",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010G2",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_UN_STD_CORP"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010G1-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010G2-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010G1-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010H1",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_UN_STD_CORP"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010D_208-OK1"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010H1-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_208-OK1",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010H2",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_STD_LOCND"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010H1-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010H2-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010H1-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010H3",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_IFRS9_CORP"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010H2-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010H3-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010H2-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010JA",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_UN_STD_CORP"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010D_214-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010JA-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_214-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010JB",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_UN_MDSTD_C"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010JA-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010JB-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010JA-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010JC",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_IFRS9_CORP"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010JB-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010JC-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010JB-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010JD",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_UNIDAD_CORP"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010JC-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010JD-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010JC-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010JE",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_DECOUPLEDND"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010JD-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010JE-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010JD-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010JF",
+            "type": "script",
+            "file_name": "50064157_Extractor_Generico_Peticion_Unidad.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"},
+                {"parm": "3"},
+                {"parm": "1"},
+                {"parm": "OUT_STD_LOCND"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010JE-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010JF-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010JE-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS010R",
+            "type": "script",
+            "file_name": "Procesar_Issues.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/SIB/SCRIPTS/Procesar_Issues/bin",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"},
+                {"parm": "PDT"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010D_219-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS010R-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D_219-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS011D",
+            "type": "script",
+            "file_name": "backup_opu.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/SIB/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS010D-OK",
+                    "operator":"OR"
+                },
+                {
+                    "name":"ICIRAUS010A-OK",
+                    "operator":"OR"
+                },
+                {
+                    "name":"ICIRAUS010A1-OK",
+                    "operator":"OR"
+                },
+                {
+                    "name":"ICIRAUS010B-OK",
+                    "operator":"OR"
+                },
+                {
+                    "name":"ICIRAUS010B1-OK",
+                    "operator":"OR"
+                },
+                {
+                    "name":"ICIRAUS010C-OK",
+                    "operator":"OR"
+                },
+                {
+                    "name":"ICIRAUS010F2-OK",
+                    "operator":"OR"
+                },
+                {
+                    "name":"ICIRAUS010G2-OK",
+                    "operator":"OR"
+                },
+                {
+                    "name":"ICIRAUS010H3-OK",
+                    "operator":"OR"
+                },
+                {
+                    "name":"ICIRAUS010JF-OK",
+                    "operator":"OR"
+                },
+                {
+                    "name":"ICIRAUS010R-OK",
+                    "operator":"OR"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS011D-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS010D-OK",
+                    "exit":"*",
+                    "sign":"-"
+                },
+                {
+                    "name":"ICIRAUS010A-OK",
+                    "exit":"*",
+                    "sign":"-"
+                },
+                {
+                    "name":"ICIRAUS010A1-OK",
+                    "exit":"*",
+                    "sign":"-"
+                },
+                {
+                    "name":"ICIRAUS010B-OK",
+                    "exit":"*",
+                    "sign":"-"
+                },
+                {
+                    "name":"ICIRAUS010B1-OK",
+                    "exit":"*",
+                    "sign":"-"
+                },
+                {
+                    "name":"ICIRAUS010C-OK",
+                    "exit":"*",
+                    "sign":"-"
+                },
+                {
+                    "name":"ICIRAUS010F2-OK",
+                    "exit":"*",
+                    "sign":"-"
+                },
+                {
+                    "name":"ICIRAUS010G2-OK",
+                    "exit":"*",
+                    "sign":"-"
+                },
+                {
+                    "name":"ICIRAUS010H3-OK",
+                    "exit":"*",
+                    "sign":"-"
+                },
+                {
+                    "name":"ICIRAUS010JF-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS015D",
+            "type": "script",
+            "file_name": "50064157_Calidad_Opu.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS011D-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS015D-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS011D-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        },
+        {
+            "id": "ICIRAUS016D",
+            "type": "script",
+            "file_name": "50064157_Ejecutar_Idcross_opu.sh",
+            "file_path": "/SCHQ/RDA19/SrcFiles/DW/50064157/SCRIPTS",
+            "host": "Powercenter",
+            "parameters":[
+                {"parm": "%%odate"},
+                {"parm": "CIR"},
+                {"parm": "AUS"}
+            ],
+            "prerequisites":[
+                {
+                    "name":"ICIRAUS015D-OK"
+                }
+            ],
+            "actions":[
+                {
+                    "name":"ICIRAUS016D-OK",
+                    "exit":"0",
+                    "sign":"+"
+                },
+                {
+                    "name":"ICIRAUS015D-OK",
+                    "exit":"*",
+                    "sign":"-"
+                }
+            ]
+        }
+
+    ]
+}
