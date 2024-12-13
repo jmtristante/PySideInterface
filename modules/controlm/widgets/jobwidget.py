@@ -5,9 +5,16 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphi
     QGraphicsTextItem, QGraphicsItem, QMenu
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QMouseEvent, QPen, QColor, QFont, QAction
+from PySide6.QtCore import Signal, QObject
 
+class JobSignalEmitter(QObject):
+    job_selected = Signal(Job)  # Señal que emite un Job
 
 class JobWidget(QGraphicsRectItem):
+    # Definir la señal correctamente
+
+    job_selected = Signal(Job)
+
     def __init__(self, x, y, job, parent=None):
         width = 200
         height = 120
@@ -15,9 +22,11 @@ class JobWidget(QGraphicsRectItem):
 
         self.job = job
 
+        # Crear el emisor de señales
+        self.signal_emitter = JobSignalEmitter()
+
 
         # Cambiar el color del borde a gris
-        self.setBrush(Qt.white)
         self.default_pen = QPen(QColor("gray"))  # Guardar el color predeterminado del borde
         self.clicked_pen = QPen(QColor("blue"), 4)  # Color azul más grueso para el borde
         self.setPen(self.default_pen)
@@ -101,12 +110,11 @@ class JobWidget(QGraphicsRectItem):
         return status_colors.get(self.status, QColor("black"))
 
     def mousePressEvent(self, event: QMouseEvent):
-        if event.button() == Qt.LeftButton:
-            print(f"Left click on job: {self.job_name}")
-            self.setPen(self.clicked_pen)  # Cambiar el borde a azul
-            self.setFocus()  # Establecer el enfoque en el widget
-
-
+        print(f"Left click on job: {self.job_name}")
+        self.setPen(self.clicked_pen)  # Cambiar el borde a azul
+        self.signal_emitter.job_selected.emit(self.job)  # Emitir la señal
+        self.setFocus()  # Establecer el enfoque en el widget
+        super().mousePressEvent(event)
 
     def focusOutEvent(self, event):
         """Eliminar el borde azul al perder el foco."""
@@ -118,11 +126,9 @@ class JobWidget(QGraphicsRectItem):
         """Mostrar el menú al hacer clic derecho."""
         menu = QMenu(self.parentItem())  # O usar self.scene() si lo prefieres
 
-        action1 = QAction('Acción 1', self.parentItem())
-        action2 = QAction('Acción 2', self.parentItem())
-        action_ok = QAction('Poner a OK', self.parentItem())  # Nueva acción para poner a OK
-
-        # Conectar las acciones a sus métodos
+        action1 = QAction('Acción 1')
+        action2 = QAction('Acción 2')
+        action_ok = QAction('Poner a OK')  # Nueva acción para poner a OK
 
         action_ok.triggered.connect(self.set_job_complete)  # Conectamos la acción "Poner a OK"
 
@@ -133,6 +139,9 @@ class JobWidget(QGraphicsRectItem):
 
         # Ejecutar el menú
         menu.exec(event.screenPos())
+
+        # Actualizamos la escena
+        self.scene().update()
 
     def set_job_complete(self):
         """Cambiar el estado del Job a 'complete'."""
@@ -156,8 +165,6 @@ class JobWidget(QGraphicsRectItem):
 
         # Actualizar el color de la barra de estado
         self.dividing_line.setBrush(self.get_status_color())
-        self.scene().update()
-
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -203,9 +210,3 @@ if __name__ == "__main__":
     window.show()
 
     app.exec()
-
-
-
-
-
-
