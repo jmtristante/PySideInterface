@@ -12,7 +12,7 @@ from styles.styles import load_styles
 class ModernInterface(QMainWindow):
     def __init__(self, menu_config):
         super().__init__()
-        self.setWindowTitle("Interfaz Moderna con Menú Retráctil")
+        self.setWindowTitle("PySide Interface")
         self.setMinimumSize(800, 600)
 
         self.menu_config = menu_config
