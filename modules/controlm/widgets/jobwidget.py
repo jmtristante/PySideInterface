@@ -1,4 +1,6 @@
 from datetime import datetime
+from modules.controlm.classes.JobStatus import JobStatus
+
 
 from modules.controlm.classes.job import Job
 from PySide6.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QGraphicsRectItem, \
@@ -91,10 +93,10 @@ class JobWidget(QGraphicsItem):
     def get_status_color(self):
         """Retornar el color asociado con el estado del trabajo."""
         status_colors = {
-            "complete": QColor("green"),
-            "running": QColor("yellow"),
-            "failed": QColor("red"),
-            "waiting": QColor("gray")
+            JobStatus.OK: QColor("green"),
+            JobStatus.RUNNING: QColor("yellow"),
+            JobStatus.KO: QColor("red"),
+            JobStatus.WAITING: QColor("gray")
         }
         return status_colors.get(self.status, QColor("black"))
 

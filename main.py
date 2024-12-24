@@ -156,6 +156,12 @@ class ModernInterface(QMainWindow):
         """Cambia a la pantalla de configuración."""
         self.change_screen("settings")
 
+    def closeEvent(self, event):
+        #Aseguramos que cerramos todas las subventanas
+        for i in range(self.screen_container.count()):
+            widget = self.screen_container.widget(i)
+            widget.closeEvent(event)
+
 
 if __name__ == "__main__":
     import sys
